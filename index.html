@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vote Étudiant — Chef de Classe</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- ══ HEADER ══════════════════════════════════════════════ -->
+  <header class="site-header">
+    <div class="header-chip">
+      <span class="chip-dot"></span>
+      <span>Système de Vote Étudiant</span>
+    </div>
+    <h1>Élection du <span class="accent">Chef de Classe</span></h1>
+    <p>Plateforme de vote numérique · Sécurisée · Résultats en temps réel</p>
+  </header>
+
+  <!-- ══ TABS ════════════════════════════════════════════════ -->
+  <nav class="tabs">
+    <button class="tab-btn active" id="tab-admin"   onclick="switchTab('admin')">  ⚙️ Gestion</button>
+    <button class="tab-btn"        id="tab-vote"    onclick="switchTab('vote')">   🗳️ Voter</button>
+    <button class="tab-btn"        id="tab-results" onclick="switchTab('results')">📊 Résultats</button>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SECTION GESTION
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="section active" id="section-admin">
+
+    <!-- Timer -->
+    <div class="timer-bar">
+      <div class="timer-label">⏱ Durée du scrutin</div>
+      <div class="timer-display" id="timer-display">00:00</div>
+      <div class="timer-controls">
+        <input type="number" id="timer-input" value="5" min="1" max="999"/>
+        <label>min</label>
+        <button class="tbtn go" onclick="startTimer()">▶ Démarrer</button>
+        <button class="tbtn"    onclick="resetTimer()">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Formulaire candidat -->
+    <div class="form-card">
+      <div class="form-card-head">
+        <div class="form-card-icon">👤</div>
+        <div>
+          <h2>Ajouter un Candidat</h2>
+          <p>Remplissez les informations du candidat ci-dessous</p>
+        </div>
+      </div>
+
+      <div class="form-body">
+
+        <!-- Bloc Identité -->
+        <div class="fblock">
+          <div class="fblock-title">🪪 Identité</div>
+          <div class="fgrid">
+            <div class="fg">
+              <label>Nom *</label>
+              <input type="text" id="f-lastname"  placeholder="Ex : Lamah" maxlength="60"/>
+            </div>
+            <div class="fg">
+              <label>Prénom *</label>
+              <input type="text" id="f-firstname" placeholder="Ex : Fassou" maxlength="60"/>
+            </div>
+            <div class="fg">
+              <label>Téléphone</label>
+              <input type="tel"  id="f-phone"     placeholder="Ex : +224 620 56 44 15" maxlength="25"/>
+            </div>
+            <div class="fg">
+              <label>Couleur du candidat</label>
+              <div class="swatches" id="swatches">
+                <div class="sw on"  data-c="#00d4ff" style="background:#00d4ff" onclick="pickColor(this)"></div>
+                <div class="sw"     data-c="#c0392b" style="background:#c0392b" onclick="pickColor(this)"></div>
+                <div class="sw"     data-c="#10b981" style="background:#10b981" onclick="pickColor(this)"></div>
+                <div class="sw"     data-c="#7c3aed" style="background:#7c3aed" onclick="pickColor(this)"></div>
+                <div class="sw"     data-c="#f0b429" style="background:#f0b429" onclick="pickColor(this)"></div>
+                <div class="sw"     data-c="#e11d91" style="background:#e11d91" onclick="pickColor(this)"></div>
+                <div class="sw"     data-c="#0ea5e9" style="background:#0ea5e9" onclick="pickColor(this)"></div>
+                <div class="sw"     data-c="#f97316" style="background:#f97316" onclick="pickColor(this)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloc Académique -->
+        <div class="fblock">
+          <div class="fblock-title">🎓 Informations Académiques</div>
+          <div class="fgrid">
+            <div class="fg">
+              <label>Faculté *</label>
+              <select id="f-faculty">
+                <option value="">— Sélectionner —</option>
+                <option>FST — Sciences et Technologies</option>
+                <option>FDE — Droit et Économie</option>
+                <option>FLS — Lettres et Sciences Humaines</option>
+                <option>FMP — Médecine et Pharmacie</option>
+                <option>FSEA — Sciences de l'Environnement et d'Agronomie</option>
+                <option>Autre</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Département *</label>
+              <select id="f-department">
+                <option value="">— Sélectionner —</option>
+                <optgroup label="Informatique">
+                  <option>MIAGE</option>
+                  <option>Informatique</option>
+                  <option>Génie Logiciel</option>
+                  <option>Génie Informatique</option>
+                </optgroup>
+                <optgroup label="Sciences">
+                  <option>Biologie</option>
+                  <option>Chimie</option>
+                  <option>Mathématiques</option>
+                  <option>Physique</option>
+                </optgroup>
+                <optgroup label="Économie & Droit">
+                  <option>Économie</option>
+                  <option>Gestion</option>
+                  <option>Droit</option>
+                </optgroup>
+                <optgroup label="Autres">
+                  <option>Lettres</option>
+                  <option>Sociologie</option>
+                  <option>Autre</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Niveau de Licence *</label>
+              <select id="f-level">
+                <option value="">— Sélectionner —</option>
+                <option value="L1">L1 — Première année</option>
+                <option value="L2">L2 — Deuxième année</option>
+                <option value="L3">L3 — Troisième année</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloc Photo -->
+        <div class="fblock">
+          <div class="fblock-title">📷 Photo</div>
+          <div class="fgrid">
+            <div class="fg full">
+              <div class="photo-zone" id="photo-zone">
+                <input type="file" id="f-photo" accept="image/*" onchange="previewPhoto(event)"/>
+                <img class="photo-prev" id="photo-prev" alt="Aperçu"/>
+                <div id="photo-placeholder">
+                  <div class="photo-zone-icon">📸</div>
+                  <p>Cliquez ou glissez une photo · <strong>JPG, PNG acceptés</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" onclick="addCandidate()">✚ Ajouter le candidat</button>
+          <button class="btn btn-ghost"   onclick="clearForm()">✕ Effacer</button>
+        </div>
+        <div class="ferror" id="ferror"></div>
+      </div>
+    </div>
+
+    <!-- Compteur + boutons reset uniquement — pas de liste -->
+    <div id="add-toast" style="display:none;margin-bottom:16px;"></div>
+    <div class="admin-toolbar">
+      <div class="admin-title">
+        Candidats enregistrés
+        <span class="count-pill" id="candidate-count">0</span>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-ghost" style="font-size:12px;" onclick="resetVotes()">🔄 Remettre votes à zéro</button>
+        <button class="btn btn-ghost" style="font-size:12px;" onclick="resetAll()">🗑 Tout supprimer</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SECTION VOTER
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="section" id="section-vote">
+
+    <div class="vote-banner">
+      <div>
+        <h3>🗳️ Exercez votre droit de vote</h3>
+        <p>Chaque étudiant vote à son tour · Un vote par personne</p>
+      </div>
+      <div class="status-badge" id="vote-status-badge">En attente</div>
+    </div>
+
+    <!-- Timer visible sur la page vote -->
+    <div class="timer-bar" style="margin-bottom:20px;">
+      <div class="timer-label">⏱ Temps restant</div>
+      <div class="timer-display" id="vote-timer-display">—</div>
+    </div>
+
+    <!-- Zone dynamique : saisie nom / cartes / confirmation -->
+    <div id="vote-dynamic"></div>
+
+    <!-- Bouton confirmer (visible quand cartes affichées) -->
+    <div class="submit-row" id="submit-row" style="display:none;">
+      <button class="btn btn-primary" id="btn-confirm" disabled onclick="submitVote()">✔ Confirmer mon vote</button>
+      <span class="submit-hint" id="submit-hint">Sélectionnez un candidat</span>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SECTION RÉSULTATS
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="section" id="section-results">
+
+    <div class="res-header">
+      <h2>📊 Résultats du Scrutin</h2>
+      <span class="total-pill" id="total-pill">0 vote</span>
+    </div>
+
+    <div class="no-votes" id="no-votes">🗳️ Aucun vote enregistré pour l'instant.</div>
+
+    <div id="charts-wrap" style="display:none;">
+
+      <!-- Barres -->
+      <div class="chart-card">
+        <div class="chart-title">Répartition des votes</div>
+        <div class="bar-chart" id="bar-chart"></div>
+
+        <!-- Donut -->
+        <div class="donut-wrap">
+          <svg width="160" height="160" viewBox="0 0 160 160" id="donut-svg">
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#1e2d45" stroke-width="28"/>
+          </svg>
+          <div class="donut-legend" id="donut-legend"></div>
+        </div>
+      </div>
+
+      <!-- Vainqueur -->
+      <div class="winner-card" id="winner-card">
+        <div class="winner-crown">👑</div>
+        <div class="winner-label">Candidat en tête</div>
+        <div class="winner-name" id="winner-name">—</div>
+        <div class="winner-dept" id="winner-dept"></div>
+        <div class="winner-stat" id="winner-stat"></div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <footer class="site-footer">
+    Vote Electronique des Étudiants  · Développer par <strong> LAMAH_MIX</strong>
+  </footer>
+
+</div>
+<script src="Script.js"></script>
+</body>
+</html>
